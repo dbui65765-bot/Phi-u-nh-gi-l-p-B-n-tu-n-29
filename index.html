@@ -30,19 +30,6 @@
             color: #E67E22;
             margin-bottom: 20px;
         }
-        .info-box {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .info-box input {
-            padding: 10px;
-            width: 300px;
-            border-radius: 8px;
-            border: 1px solid #E67E22;
-            font-size: 16px;
-            text-align: center;
-            font-family: inherit;
-        }
         table {
             width: 100%;
             border-collapse: collapse;
@@ -58,6 +45,12 @@
             background-color: #FFB84D;
             color: white;
             font-weight: bold;
+        }
+        /* Cột Tự đánh giá */
+        .rating-group {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
         }
         .rating-group label {
             cursor: pointer;
@@ -79,6 +72,7 @@
             border-radius: 8px;
             font-family: inherit;
         }
+        /* Khu vực tải ảnh */
         .upload-btn-wrapper {
             position: relative;
             overflow: hidden;
@@ -113,38 +107,23 @@
             display: none;
             box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
-        .button-group {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-        }
         .action-btn {
             background-color: #4CAF50;
             color: white;
             border: none;
-            padding: 12px 25px;
+            padding: 10px 20px;
             border-radius: 10px;
             font-size: 16px;
             cursor: pointer;
+            margin-top: 20px;
             font-weight: bold;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: 0.3s;
         }
         .action-btn:hover { background-color: #45a049; }
-        .action-btn:disabled { background-color: #9e9e9e; cursor: not-allowed; }
-        .print-btn {
-            background-color: #607d8b;
-        }
-        .print-btn:hover { background-color: #546e7a; }
-        #statusMsg {
-            margin-top: 15px;
-            font-weight: bold;
-            color: #E67E22;
-            text-align: center;
-        }
         
+        /* Ẩn nút khi in */
         @media print {
-            .button-group, .btn, #statusMsg { display: none !important; }
+            .action-btn, .btn { display: none !important; }
             .container { box-shadow: none; border: none; }
         }
     </style>
@@ -153,17 +132,12 @@
 
 <div class="container">
     <h2>🌟 BẢNG TỰ ĐÁNH GIÁ 🌟</h2>
-    
-    <div class="info-box">
-        <input type="text" id="tenHocSinh" placeholder="Nhập họ và tên của em..." required />
-    </div>
-
     <table>
         <thead>
             <tr>
                 <th rowspan="2" style="width: 5%;">STT</th>
-                <th rowspan="2" style="width: 25%;">Việc đã làm</th>
-                <th colspan="3" style="width: 35%;">Tự đánh giá</th>
+                <th rowspan="2" style="width: 30%;">Việc đã làm</th>
+                <th colspan="3" style="width: 30%;">Tự đánh giá</th>
                 <th rowspan="2" style="width: 35%;">Hình ảnh minh chứng / Ghi chú</th>
             </tr>
             <tr>
@@ -175,45 +149,45 @@
         <tbody id="table-body">
             <tr>
                 <td>1</td>
-                <td><input type="text" id="viec1" value="Dọn rác ở khu tham quan" /></td>
-                <td><input type="radio" name="rating1" value="Tốt"></td>
-                <td><input type="radio" name="rating1" value="Bình thường"></td>
-                <td><input type="radio" name="rating1" value="Chưa tốt"></td>
+                <td><input type="text" value="Dọn rác ở khu tham quan" /></td>
+                <td><input type="radio" name="rating1" value="tot"></td>
+                <td><input type="radio" name="rating1" value="binhthuong"></td>
+                <td><input type="radio" name="rating1" value="chuatot"></td>
                 <td>
-                    <input type="text" id="note1" placeholder="Nhập ghi chú..." style="margin-bottom: 5px;" />
+                    <input type="text" placeholder="Nhập ghi chú..." style="margin-bottom: 5px;" />
                     <div class="upload-btn-wrapper">
                         <button class="btn">📸 Chọn ảnh</button>
-                        <input type="file" id="file1" accept="image/*" onchange="previewImage(event, 'preview1')" />
+                        <input type="file" accept="image/*" onchange="previewImage(event, 'preview1')" />
                     </div>
                     <img id="preview1" class="img-preview" src="#" alt="Ảnh minh chứng" />
                 </td>
             </tr>
             <tr>
                 <td>2</td>
-                <td><input type="text" id="viec2" placeholder="Nhập việc đã làm..." /></td>
-                <td><input type="radio" name="rating2" value="Tốt"></td>
-                <td><input type="radio" name="rating2" value="Bình thường"></td>
-                <td><input type="radio" name="rating2" value="Chưa tốt"></td>
+                <td><input type="text" placeholder="Nhập việc đã làm..." /></td>
+                <td><input type="radio" name="rating2" value="tot"></td>
+                <td><input type="radio" name="rating2" value="binhthuong"></td>
+                <td><input type="radio" name="rating2" value="chuatot"></td>
                 <td>
-                    <input type="text" id="note2" placeholder="Nhập ghi chú..." style="margin-bottom: 5px;" />
+                    <input type="text" placeholder="Nhập ghi chú..." style="margin-bottom: 5px;" />
                     <div class="upload-btn-wrapper">
                         <button class="btn">📸 Chọn ảnh</button>
-                        <input type="file" id="file2" accept="image/*" onchange="previewImage(event, 'preview2')" />
+                        <input type="file" accept="image/*" onchange="previewImage(event, 'preview2')" />
                     </div>
                     <img id="preview2" class="img-preview" src="#" alt="Ảnh minh chứng" />
                 </td>
             </tr>
             <tr>
                 <td>3</td>
-                <td><input type="text" id="viec3" placeholder="Nhập việc đã làm..." /></td>
-                <td><input type="radio" name="rating3" value="Tốt"></td>
-                <td><input type="radio" name="rating3" value="Bình thường"></td>
-                <td><input type="radio" name="rating3" value="Chưa tốt"></td>
+                <td><input type="text" placeholder="Nhập việc đã làm..." /></td>
+                <td><input type="radio" name="rating3" value="tot"></td>
+                <td><input type="radio" name="rating3" value="binhthuong"></td>
+                <td><input type="radio" name="rating3" value="chuatot"></td>
                 <td>
-                    <input type="text" id="note3" placeholder="Nhập ghi chú..." style="margin-bottom: 5px;" />
+                    <input type="text" placeholder="Nhập ghi chú..." style="margin-bottom: 5px;" />
                     <div class="upload-btn-wrapper">
                         <button class="btn">📸 Chọn ảnh</button>
-                        <input type="file" id="file3" accept="image/*" onchange="previewImage(event, 'preview3')" />
+                        <input type="file" accept="image/*" onchange="previewImage(event, 'preview3')" />
                     </div>
                     <img id="preview3" class="img-preview" src="#" alt="Ảnh minh chứng" />
                 </td>
@@ -222,33 +196,19 @@
     </table>
 </div>
 
-<div id="statusMsg"></div>
-
-<div class="button-group">
-    <button class="action-btn" id="btnNopBai">🚀 Nộp bài lên hệ thống</button>
-    <button class="action-btn print-btn" onclick="window.print()">🖨️ Lưu PDF / In</button>
-</div>
+<button class="action-btn" onclick="window.print()">🖨️ Lưu file PDF / In để nộp bài</button>
 
 <script>
-    function previewImage(event, previewId) {
-        var input = event.target;
-        var preview = document.getElementById(previewId);
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                preview.src = e.target.result;
-                preview.style.display = 'block';
-            }
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-</script>
+    <button class="action-btn" id="saveDataBtn" style="background-color: #3498db;">☁️ Lưu dữ liệu lên Firebase</button>
+<button class="action-btn" onclick="window.print()">🖨️ Lưu file PDF / In để nộp bài</button>
 
 <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
-    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
-    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-storage.js";
+    // 1. Import Firebase từ CDN thay vì từ npm
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+    // 2. Import thêm Firestore để lưu dữ liệu văn bản
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
+    // 3. Cấu hình Firebase của bạn
     const firebaseConfig = {
         apiKey: "AIzaSyDqqTp4O_KdeiqcgQGC8_DJ3sDPyFDRvXs",
         authDomain: "phieu-lan.firebaseapp.com",
@@ -258,88 +218,80 @@
         appId: "1:29053596764:web:74dae014041398ed8c6299"
     };
 
+    // 4. Khởi tạo Firebase và Firestore
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-    const storage = getStorage(app);
 
-    document.getElementById('btnNopBai').addEventListener('click', async () => {
-        const tenHS = document.getElementById('tenHocSinh').value;
-        const btn = document.getElementById('btnNopBai');
-        const msg = document.getElementById('statusMsg');
+    // 5. Hàm xử lý khi chọn ảnh (Giữ nguyên của bạn)
+    window.previewImage = function(event, previewId) {
+        var input = event.target;
+        var preview = document.getElementById(previewId);
+        
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    };
 
-        if (!tenHS) {
-            alert("Em vui lòng điền Họ và tên trước khi nộp nhé!");
+    // 6. Xử lý sự kiện khi bấm nút Lưu dữ liệu
+    document.getElementById("saveDataBtn").addEventListener("click", async () => {
+        const rows = document.querySelectorAll("#table-body tr");
+        const studentData = [];
+
+        // Lặp qua từng dòng trong bảng để lấy dữ liệu
+        rows.forEach((row, index) => {
+            const rowNumber = index + 1;
+            const taskName = row.cells[1].querySelector('input[type="text"]').value;
+            const ratingRadio = row.querySelector(`input[name="rating${rowNumber}"]:checked`);
+            const ratingValue = ratingRadio ? ratingRadio.value : "Chưa đánh giá";
+            const noteValue = row.cells[5].querySelector('input[type="text"]').value;
+
+            // Lưu ý: Việc lưu trữ ảnh trực tiếp vào cơ sở dữ liệu (Firestore) dưới dạng chuỗi dài là không tối ưu.
+            // Để quản lý ảnh tốt nhất, cần thêm Firebase Storage trong tương lai. Ở đây ta tạm thời lưu trữ text.
+            if (taskName.trim() !== "") {
+                studentData.push({
+                    stt: rowNumber,
+                    viec_da_lam: taskName,
+                    danh_gia: ratingValue,
+                    ghi_chu: noteValue
+                });
+            }
+        });
+
+        if (studentData.length === 0) {
+            alert("Vui lòng nhập ít nhất một việc đã làm trước khi lưu!");
             return;
         }
 
-        btn.disabled = true;
-        msg.innerText = "⏳ Đang tải dữ liệu và hình ảnh lên... Em vui lòng chờ chút nhé!";
-
         try {
-            const danhSachHoatDong = [];
+            // Đổi text nút để báo hiệu đang lưu
+            const btn = document.getElementById("saveDataBtn");
+            const originalText = btn.innerHTML;
+            btn.innerHTML = "⏳ Đang lưu...";
+            btn.disabled = true;
 
-            // Quét qua 3 hàng trong bảng
-            for (let i = 1; i <= 3; i++) {
-                const viec = document.getElementById(`viec${i}`).value;
-                
-                // Nếu ô Việc đã làm có chữ thì mới lưu hàng đó
-                if (viec.trim() !== "") {
-                    const note = document.getElementById(`note${i}`).value;
-                    const fileInput = document.getElementById(`file${i}`);
-                    const file = fileInput.files[0];
-                    
-                    // Tìm xem học sinh chọn mức đánh giá nào
-                    let rating = "Chưa chọn";
-                    const radios = document.getElementsByName(`rating${i}`);
-                    for (let r of radios) {
-                        if (r.checked) rating = r.value;
-                    }
-
-                    // Đẩy ảnh lên Storage (nếu có chọn ảnh)
-                    let hinhAnhUrl = "";
-                    if (file) {
-                        const fileName = Date.now() + "_" + file.name;
-                        const storageRef = ref(storage, 'HinhAnhMinhChung/' + fileName);
-                        await uploadBytes(storageRef, file);
-                        hinhAnhUrl = await getDownloadURL(storageRef);
-                    }
-
-                    // Gộp dữ liệu của 1 hàng
-                    danhSachHoatDong.push({
-                        viecDaLam: viec,
-                        danhGia: rating,
-                        ghiChu: note,
-                        hinhAnh: hinhAnhUrl
-                    });
-                }
-            }
-
-            if (danhSachHoatDong.length === 0) {
-                alert("Em cần nhập ít nhất 1 việc đã làm!");
-                btn.disabled = false;
-                msg.innerText = "";
-                return;
-            }
-
-            // Gửi toàn bộ dữ liệu lên Firestore
-            await addDoc(collection(db, "DanhSachNopBai"), {
-                tenHocSinh: tenHS,
-                thoiGian: new Date(),
-                cacHoatDong: danhSachHoatDong
+            // Đẩy dữ liệu lên bộ sưu tập (collection) mang tên "bang_tu_danh_gia"
+            const docRef = await addDoc(collection(db, "bang_tu_danh_gia"), {
+                thoi_gian_nop: new Date().toISOString(),
+                chi_tiet: studentData
             });
 
-            msg.style.color = "#4CAF50";
-            msg.innerText = "✅ Nộp bài thành công! Thầy/Cô đã nhận được bài của em.";
-            btn.innerText = "ĐÃ GỬI XONG";
-
-        } catch (error) {
-            console.error(error);
-            msg.style.color = "red";
-            msg.innerText = "❌ Có lỗi xảy ra: " + error.message;
+            alert("✅ Đã lưu dữ liệu thành công lên hệ thống!");
+            
+            // Khôi phục nút
+            btn.innerHTML = originalText;
             btn.disabled = false;
+        } catch (error) {
+            console.error("Lỗi khi lưu dữ liệu: ", error);
+            alert("❌ Có lỗi xảy ra khi lưu dữ liệu. Hãy kiểm tra console.");
         }
     });
 </script>
+
 
 </body>
 </html>
