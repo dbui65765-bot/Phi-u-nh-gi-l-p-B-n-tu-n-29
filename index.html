@@ -121,9 +121,15 @@
         }
         .action-btn:hover { background-color: #45a049; }
         
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
         /* Ẩn nút khi in */
         @media print {
-            .action-btn, .btn { display: none !important; }
+            .button-group, .btn, .upload-btn-wrapper { display: none !important; }
             .container { box-shadow: none; border: none; }
         }
     </style>
@@ -196,19 +202,17 @@
     </table>
 </div>
 
-<button class="action-btn" onclick="window.print()">🖨️ Lưu file PDF / In để nộp bài</button>
-
-<script>
-    <button class="action-btn" id="saveDataBtn" style="background-color: #3498db;">☁️ Lưu dữ liệu lên Firebase</button>
-<button class="action-btn" onclick="window.print()">🖨️ Lưu file PDF / In để nộp bài</button>
+<div class="button-group">
+    <button class="action-btn" id="saveDataBtn" style="background-color: #3498db;">☁️ Lưu dữ liệu lên hệ thống</button>
+    <button class="action-btn" onclick="window.print()">🖨️ Lưu file PDF / In</button>
+</div>
 
 <script type="module">
-    // 1. Import Firebase từ CDN thay vì từ npm
+    // 1. Import Firebase từ CDN
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-    // 2. Import thêm Firestore để lưu dữ liệu văn bản
     import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
-    // 3. Cấu hình Firebase của bạn
+    // 2. Cấu hình Firebase
     const firebaseConfig = {
         apiKey: "AIzaSyDqqTp4O_KdeiqcgQGC8_DJ3sDPyFDRvXs",
         authDomain: "phieu-lan.firebaseapp.com",
@@ -218,11 +222,11 @@
         appId: "1:29053596764:web:74dae014041398ed8c6299"
     };
 
-    // 4. Khởi tạo Firebase và Firestore
+    // 3. Khởi tạo Firebase và Firestore
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // 5. Hàm xử lý khi chọn ảnh (Giữ nguyên của bạn)
+    // 4. Hàm xử lý hiển thị ảnh (gắn vào window để gọi từ HTML)
     window.previewImage = function(event, previewId) {
         var input = event.target;
         var preview = document.getElementById(previewId);
@@ -237,12 +241,12 @@
         }
     };
 
-    // 6. Xử lý sự kiện khi bấm nút Lưu dữ liệu
+    // 5. Xử lý nút Lưu dữ liệu
     document.getElementById("saveDataBtn").addEventListener("click", async () => {
         const rows = document.querySelectorAll("#table-body tr");
         const studentData = [];
 
-        // Lặp qua từng dòng trong bảng để lấy dữ liệu
+        // Gom dữ liệu từ các dòng trong bảng
         rows.forEach((row, index) => {
             const rowNumber = index + 1;
             const taskName = row.cells[1].querySelector('input[type="text"]').value;
@@ -250,8 +254,7 @@
             const ratingValue = ratingRadio ? ratingRadio.value : "Chưa đánh giá";
             const noteValue = row.cells[5].querySelector('input[type="text"]').value;
 
-            // Lưu ý: Việc lưu trữ ảnh trực tiếp vào cơ sở dữ liệu (Firestore) dưới dạng chuỗi dài là không tối ưu.
-            // Để quản lý ảnh tốt nhất, cần thêm Firebase Storage trong tương lai. Ở đây ta tạm thời lưu trữ text.
+            // Chỉ lưu những dòng đã điền "Việc đã làm"
             if (taskName.trim() !== "") {
                 studentData.push({
                     stt: rowNumber,
@@ -268,30 +271,31 @@
         }
 
         try {
-            // Đổi text nút để báo hiệu đang lưu
             const btn = document.getElementById("saveDataBtn");
             const originalText = btn.innerHTML;
             btn.innerHTML = "⏳ Đang lưu...";
             btn.disabled = true;
 
-            // Đẩy dữ liệu lên bộ sưu tập (collection) mang tên "bang_tu_danh_gia"
+            // Đẩy dữ liệu lên Firestore
             const docRef = await addDoc(collection(db, "bang_tu_danh_gia"), {
                 thoi_gian_nop: new Date().toISOString(),
                 chi_tiet: studentData
             });
 
-            alert("✅ Đã lưu dữ liệu thành công lên hệ thống!");
+            alert("✅ Đã lưu dữ liệu thành công!");
             
-            // Khôi phục nút
             btn.innerHTML = originalText;
             btn.disabled = false;
         } catch (error) {
-            console.error("Lỗi khi lưu dữ liệu: ", error);
-            alert("❌ Có lỗi xảy ra khi lưu dữ liệu. Hãy kiểm tra console.");
+            console.error("Lỗi: ", error);
+            alert("❌ Không thể lưu dữ liệu! Hãy kiểm tra lại kết nối mạng hoặc quyền (Rules) trên Firebase.");
+            
+            const btn = document.getElementById("saveDataBtn");
+            btn.innerHTML = "☁️ Lưu dữ liệu lên hệ thống";
+            btn.disabled = false;
         }
     });
 </script>
-
 
 </body>
 </html>
